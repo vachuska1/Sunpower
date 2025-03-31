@@ -1,51 +1,54 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react'
-import supabase from '../lib/supabaseClient'
+import { useEffect, useState } from "react";
+import supabase from "../lib/supabaseClient";
 
 const ProductList = () => {
-  const [products, setProducts] = useState<any[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [products, setProducts] = useState<{ id: number; name: string }[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Zavoláme API Supabase pro získání dat
+        // Správný název tabulky (products)
         const { data, error } = await supabase
-          .from('posts')  // Tabulka, ze které chceme data
-          .select('*')  // Vybíráme všechny sloupce
-        if (error) throw error
-        setProducts(data)
+          .from("products") // Opraveno na 'products'
+          .select("*");
+
+        if (error) throw error;
+        setProducts(data || []);
       } catch (error: unknown) {
-        // Cast error to Error type to access message property
         if (error instanceof Error) {
-          setError(error.message || 'Error fetching posts')  // Opraveno na 'posts'
+          setError(error.message || "Error fetching products");
         } else {
-          setError('Unknown error occurred')
+          setError("Unknown error occurred");
         }
       }
-    }
+    };
 
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   if (error) {
-    return <div>Error: {error}</div>
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div>
-      <h2>Blog Posts</h2>  {/* Opravený nadpis */}
+      <h2>Products</h2> {/* Opravený nadpis */}
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            <h3>{product.title}</h3>  {/* Opravené na title */}
-            <p>{product.content}</p>  {/* Opravené na content */}
-          </li>
-        ))}
+        {products.length === 0 ? (
+          <li>No products available</li>
+        ) : (
+          products.map((product) => (
+            <li key={product.id}>
+              <h3>{product.name}</h3> {/* Opraveno na 'name' */}
+            </li>
+          ))
+        )}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default ProductList
+export default ProductList;

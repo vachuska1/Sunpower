@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import supabase from '../lib/supabaseClient'
 
 const Blog = () => {
-  const [posts, setPosts] = useState<any[]>([])
+    const [posts, setPosts] = useState<{ id: number; title: string; content: string }[]>([]);
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
