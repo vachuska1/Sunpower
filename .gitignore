@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+
+# json files (google api)
+sunpower-455413-6d4a395f8376.json
+
 # vercel
 .vercel
 
